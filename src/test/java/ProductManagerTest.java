@@ -21,7 +21,7 @@ public class ProductManagerTest {
     }
 
     @Test
-    void testSearchByProductName() {
+    void testSearchByProductNameSeveralItems() {
         Repository repo = new Repository();
         ProductManager manager = new ProductManager(repo);
         Book book1 = new Book(1, "Гарри Поттер", 100, "J. Roalling");
@@ -31,11 +31,47 @@ public class ProductManagerTest {
         repo.addProduct(book1);
         repo.addProduct(book2);
         repo.addProduct(smartphone);
-        Product[] result = manager.searchBy("Гарри");
 
-        assertEquals(2, result.length);
-        assertEquals(book1, result[0]);
-        assertEquals(book2, result[1]);
+        Product[] act = manager.searchBy("Гарри");
+        Product[] exp = new Product[]{book1, book2};
+
+        assertArrayEquals(exp, act);
+    }
+
+    @Test
+    void testSearchByProductNameOneItem() {
+        Repository repo = new Repository();
+        ProductManager manager = new ProductManager(repo);
+        Book book1 = new Book(1, "Гарри Поттер", 100, "J. Roalling");
+        Smartphone smartphone = new Smartphone(2, "iPhone 14", 1000, "Apple");
+        Book book2 = new Book(3, "Гарри Поттер 2", 100, "J. Roalling");
+
+        repo.addProduct(book1);
+        repo.addProduct(book2);
+        repo.addProduct(smartphone);
+
+        Product[] act = manager.searchBy("iPhone");
+        Product[] exp = new Product[]{smartphone};
+
+        assertArrayEquals(exp, act);
+    }
+
+    @Test
+    void testEmptySearchByProduct() {
+        Repository repo = new Repository();
+        ProductManager manager = new ProductManager(repo);
+        Book book1 = new Book(1, "Гарри Поттер", 100, "J. Roalling");
+        Smartphone smartphone = new Smartphone(2, "iPhone 14", 1000, "Apple");
+        Book book2 = new Book(3, "Гарри Поттер 2", 100, "J. Roalling");
+
+        repo.addProduct(book1);
+        repo.addProduct(book2);
+        repo.addProduct(smartphone);
+
+        Product[] act = manager.searchBy("iPad");
+        Product[] exp = new Product[]{};
+
+        assertArrayEquals(exp, act);
     }
 
     @Test
